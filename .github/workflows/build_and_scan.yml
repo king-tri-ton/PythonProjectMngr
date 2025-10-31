@@ -34,9 +34,11 @@ jobs:
         PYTHONIOENCODING: utf-8
 
     - name: Restore code signing certificate
-      run: |
-        echo "${{ secrets.PFX_BASE64 }}" | certutil -decode - kingtriton.pfx
       shell: powershell
+      run: |
+        $pfxBase64 = "${{ secrets.PFX_BASE64 }}"
+        $pfxBytes = [System.Convert]::FromBase64String($pfxBase64)
+        [IO.File]::WriteAllBytes("kingtriton.pfx", $pfxBytes)
 
     - name: Sign EXE
       run: |
