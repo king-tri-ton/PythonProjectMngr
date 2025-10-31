@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.13'
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
@@ -29,9 +29,19 @@ jobs:
 
     - name: Build EXE
       run: |
-        python -m PyInstaller --noupx --onefile --windowed --icon=python.ico --add-data "python.ico;." --add-data "python.png;." --name="PythonProjectMngr" app.py
+        python -m PyInstaller --clean --noupx --onefile --windowed --icon=python.ico --add-data "python.ico;." --add-data "python.png;." --name="PythonProjectMngr" app.py
       env:
         PYTHONIOENCODING: utf-8
+
+    - name: Restore code signing certificate
+      run: |
+        echo "${{ secrets.PFX_BASE64 }}" | certutil -decode - kingtriton.pfx
+      shell: powershell
+
+    - name: Sign EXE
+      run: |
+        signtool sign /f kingtriton.pfx /p "${{ secrets.PFX_PASSWORD }}" /tr http://timestamp.digicert.com /td sha256 /fd sha256 dist\PythonProjectMngr.exe
+      shell: powershell
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
