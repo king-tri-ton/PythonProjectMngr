@@ -41,7 +41,7 @@ jobs:
 
     - name: Scan with VirusTotal
       if: success() && secrets.VIRUSTOTAL_API_KEY != ''
-        uses: crazy-max/ghaction-virustotal@v4.0.0
-        with:
-          vt_api_key: ${{ secrets.VIRUSTOTAL_API_KEY }}
-          files: dist/PythonProjectMngr.exe
+      uses: crazy-max/ghaction-virustotal@v4.0.0
+      with:
+        vt_api_key: ${{ secrets.VIRUSTOTAL_API_KEY }}
+        files: dist/PythonProjectMngr.exe
