@@ -29,7 +29,7 @@ jobs:
 
     - name: Build EXE
       run: |
-        python -m PyInstaller --onefile --windowed --icon=python.ico --add-data "python.ico;." --add-data "python.png;." --name="PythonProjectMngr" app.py
+        python -m PyInstaller --noupx --onefile --windowed --icon=python.ico --add-data "python.ico;." --add-data "python.png;." --name="PythonProjectMngr" app.py
       env:
         PYTHONIOENCODING: utf-8
 
@@ -40,8 +40,8 @@ jobs:
         path: dist/PythonProjectMngr.exe
 
     - name: Scan with VirusTotal
-      if: success() && env.VIRUSTOTAL_API_KEY != ''
-      uses: crazy-max/ghaction-virustotal@v4.0.0
-      with:
-        vt_api_key: ${{ secrets.VIRUSTOTAL_API_KEY }}
-        files: dist/PythonProjectMngr.exe
+      if: success() && secrets.VIRUSTOTAL_API_KEY != ''
+        uses: crazy-max/ghaction-virustotal@v4.0.0
+        with:
+          vt_api_key: ${{ secrets.VIRUSTOTAL_API_KEY }}
+          files: dist/PythonProjectMngr.exe
