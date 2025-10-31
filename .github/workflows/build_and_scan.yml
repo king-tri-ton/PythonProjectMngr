@@ -39,8 +39,7 @@ jobs:
         name: PythonProjectMngr
         path: dist/PythonProjectMngr.exe
 
-    - name: Scan with VirusTotal
-      if: success() && secrets.VIRUSTOTAL_API_KEY != ''
+    - name: VirusTotal GitHub Action
       uses: crazy-max/ghaction-virustotal@v4.0.0
       with:
         vt_api_key: ${{ secrets.VIRUSTOTAL_API_KEY }}
